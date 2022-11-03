@@ -6,10 +6,7 @@ import numpy as np
 import symplectic as sy
 
 
-## Find transvection from binary vector x to binary vector y in product coordinates (Lemma 2)
-## input x non-zero vector in FF_2^{2n}
-## input y non-zero vector in FF_2^{2n}
-## return a tuple of two transvections
+## Find transvection from binary vector x to binary vector y in product coordinates
 def find_transvection(x, y):    
     n = x.shape[0] // 2
     assert x.shape == y.shape, "Dimension mismatch"
@@ -62,10 +59,8 @@ def find_transvection(x, y):
     return ( sy.transvection_product_coord( (y - z) % 2), sy.transvection_product_coord( (z - x) % 2) )
 
 
-## Sampler for a SymplecticMatrix acting on n qubits in product coordinates
+## Sample a SymplecticMatrix acting on n qubits in product coordinates
 ## The function draws a random non zero vector to generate a uniformly distributed random symplectic matrix
-## input n the numer of qubits
-## output a symplectic matrix in Sp(2n,2)
 def symplectic_sampler(n):
         for N in range(2, 2 * n + 1, 2):
             if N == 2:

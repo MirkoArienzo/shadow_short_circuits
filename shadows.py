@@ -30,11 +30,13 @@ def frameop_LC(v):
 
 ## Frame operator of BW ensemble in the case of fully supported Pauli operators with periodic boundary conditions
 def frameop_periodic(n):
+    assert n%2==0, "Number of qubits must be even"
     return  ( (np.sqrt(41)+5)**(n//2) + (-1)**(n//2)
                                   *(np.sqrt(41)-5)**(n//2) ) / (5 * np.sqrt(2))**n
 
 ## Frame operator of BW ensemble with open boundary conditions on n qubits, n must be even
 def frameop_open(n):
+    assert n%2==0, "Number of qubits must be even"
     return 5/(2*np.sqrt(41)) * ( (25-3*np.sqrt(41))*(np.sqrt(41)+5)**(n/2) +
                                  (-1)**(n/2+1)*(25+3*np.sqrt(41))*(np.sqrt(41)-5)**(n/2)
                                  ) / ((5*np.sqrt(2))**n)
@@ -50,8 +52,6 @@ def frameop_BW(v):
             #roll z
             is_linear = True
             v = np.roll(v, 2*n-i)
-            # print("after roll")
-            # print(z)
             break
     if not is_linear:
         return frameop_periodic(n)

@@ -70,6 +70,9 @@ def identity(n):
 def zero_matrix(n, m):
     return np.zeros( (n,m), dtype=np.uint8 )
 
+def zero_vector(n):
+    return np.zeros(n, dtype=np.uint8)
+
 ## Returns direct sum of matrices
 def direct_sum(*args):
     nargs = len(args)

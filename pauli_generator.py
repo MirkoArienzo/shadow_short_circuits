@@ -28,7 +28,7 @@ pauli = args.pauli
 N = 2 * n
 
 ### As a convention, we choose the first qubit of the brick to be supported.
-### This means that for the (n, 1) the n-th qubit is supported
+### This means that for the brick acting on  qubits (n, 1) the n-th qubit is supported
 ### The string is generated as if it looked at the first layer first, than rotated to make it
 ### consistent with the second layer of the circuit and the way the frame operator is calculated
 
@@ -50,8 +50,6 @@ for i in range(N//4):
 
 v = np.roll(v, -2)
 
-print("v_half = ", v)
-
 savepath = "./"+str(n)+"_qubits/half_supp_"+str(pauli)+".npy"
 np.save(savepath, v)
 
@@ -66,8 +64,6 @@ v = np.zeros(N, dtype = np.uint8)
 for i in range(n):
     v[2*i:2*i+2] = assign_pauli(pauli)
     
-print("v_full = ", v)
-
 
 savepath = "./"+str(n)+"_qubits/full_supp_"+str(pauli)+".npy"
 np.save(savepath, v)
@@ -105,7 +101,7 @@ for i in range(N//4):
             k += 1
     LC_var = 3**k
     v2 = np.roll(v, -2)
-    BW_var = 1 / sd.frameop(v, "brickwork")
+    BW_var = 1 / sd.frameop(v, "BW")
     if BW_var <= LC_var:
         ind = i+1
         flag = True
@@ -113,8 +109,6 @@ for i in range(N//4):
 
 if n!=4 and n!=6 and flag:
     v[4*ind:4*ind+2] = assign_pauli(pauli)
-
-print("v_tres = ", v)
     
 
 savepath = "./"+str(n)+"_qubits/treshold_supp_"+str(pauli)+".npy"
