@@ -38,12 +38,10 @@ if np.any(sy.lag_x_component_product_coord(v)):
 else:
     target_outcome = 1
     
-print("target = ", target_outcome)
-
 data_path = "./"+str(n)+"_qubits/data/"
 data_files = os.listdir(data_path)    
 frames = ["BW", "LC"]
-colors = ["b", "r", "m", "g"]
+colors = ["b", "r"]
 color_index = 0
 num_samples = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000]
 
@@ -75,7 +73,7 @@ for frame in frames:
             data = np.append(data, np.load(data_string))
     estimators = []
     errors = []
-    var_errors = []
+    var_estimators = []
     ind_used_samples = 0
     i = 1
     num_rep = 100
@@ -83,16 +81,17 @@ for frame in frames:
         estimator = data[ind_used_samples:ind_used_samples+num_rep*mm].sum() / (frameop*num_rep*mm)
         ind_used_samples += num_rep*mm
         estimators.append(estimator)
-        errors.append(np.abs(estimator - target_outcome))
-        var_errors.append(np.sqrt(var / (num_rep*mm)))
-            
-    plt.errorbar(num_samples, estimators, yerr = var_errors, fmt='o', 
+        var_estimators.append(np.sqrt(var / (num_rep*mm)))
+        
+    
+    plt.errorbar(num_samples, estimators, yerr = var_estimators, fmt='o', 
                  color=colors[color_index], capsize = 5, alpha = overlapping,
                  label = f"{frame} estimator")
     color_index += 1
     
 plt.axhline(y = 1, color = 'k', linestyle = '-', label = "Target outcome")
 plt.legend()
+
 save_path = "./plot_comparison/"
 exists = os.path.exists(save_path)
 if not exists:
