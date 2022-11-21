@@ -51,11 +51,11 @@ fig = plt.figure()
 ax = fig.add_axes([0.14,0.14,0.8,0.8])
 
 # Creating plot
+overlapping = 0.250
 default_x_ticks = range(1, len(num_samples)+1)
 plt.xlabel("$m$", fontsize=16)
 plt.ylabel(r"$\hat w(v)$", fontsize=16)
 
-overlapping = 0.250
 
 for frame in frames:
     if frame=="BW":
@@ -99,7 +99,7 @@ if not exists:
 plot_name = f"/{n}_{supp}_{pauli}_estimator_plot.png"
 plt.savefig(save_path+plot_name, dpi = 1200)
 
-plt.show()
+# plt.show()
 
 
 
