@@ -5,12 +5,11 @@ Numerical implementation of the Pauli estimation task using different ensembles 
 
 ## Scripts:
 
-- In `recursion_open.nb' and `recursion_periodic.nb' the solutions of the systems of recurrence relations are calculated.
+- In <ins>recursion_open.nb</ins> and <ins>recursion_periodic.nb</ins> the solutions of the systems of recurrence relations are calculated.
 
 Here we mainly compare brickwork with two layers (BW) and local Cliffords (LCs) ensembles, the global Clifford ensembles is implemented for testing only.
 The code is self-contained, using standard Python packages only for the simulation scripts.
 
-- `symplectic_sampler.py', `symplectic.py', `shadows.py' include all the functions necessary to run the simulation.
 - `pauli_generator.py': generate three fixed bitstrings given the number of qubits, representing the chosen Pauli observable. The observable is a tensor product of one between X, Y, Z operators and identities.
  The three bitstrings are saved as `.npy' in the `n_qubits' subfolder, where n is the number of qubits, and loaded when needed.
 - `data_acquisition.py': collect classical snapshots of an observable of a given type (X,Y,Z), for the given ensemble (LC,BW), for a fixed number of qubits and the chosen bitstring from the ones generated with pauli_generator.py.
