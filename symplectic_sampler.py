@@ -12,13 +12,11 @@ def find_transvection(x, y):
     assert x.shape == y.shape, "Dimension mismatch"
     assert x.shape[0] % 2 == 0, "Vectors not even dimensional"
     assert not np.array_equal(x, sy.zero_vector(n)) and not np.array_equal(y, sy.zero_vector(n)), "find_transvection():\nOne of the arguments is a zero vector"
-    
     #check trivial cases
     if np.array_equal(x, y):
         return ( lambda v: v, lambda v: v )
     if sy.symplectic_form_product_coord(x, y) != 0:
         return ( lambda v: v, sy.transvection_product_coord( (x + y) % 2) )
-    
     # check if there is an i s.t. (x_{2i}, x_{2i+1}), (y_{2i}, y_{2i+1}) != 0
     z = sy.zero_vector(2*n)
     for i in range(0, n):
@@ -31,7 +29,6 @@ def find_transvection(x, y):
                 if x[2*i] != x[2*i+1]:
                     z[2*i] = 1
             return ( sy.transvection_product_coord( (y - z) % 2 ), sy.transvection_product_coord( (z - x) % 2 ) )       
-    
     # didn’t find a pair
     # look for y==00 and x not at first
     for i in range(0, n):
@@ -44,7 +41,6 @@ def find_transvection(x, y):
                 z[ii+1] = x[ii]
                 z[ii] = x[ii+1]
             break
-    
     # last case, x==00 and y doesn’t
     for i in range(0, n):
         ii = 2 * i
@@ -72,7 +68,6 @@ def symplectic_sampler(n):
             v = np.random.randint(0, 2, size = N, dtype = np.uint8)
             while np.array_equal(v, sy.zero_vector(N)):
                 v = np.random.randint(0, 2, size = N, dtype = np.uint8)
-            
             e1 = sy.std_basis_vector(1, N)
             t = find_transvection(e1, v)
 

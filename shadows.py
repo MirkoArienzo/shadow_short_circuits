@@ -118,12 +118,10 @@ def upd_vector_LC(v, g):
         u[2*i:2*i+2] = g[i] @ v[2*i:2*i+2]
     return u % 2
 
+### Apply symplectic part of first layer of bricks to vec according to BW structure.
+### vec input bitstrings of length 2n
+### g input list of n/2 matrices in Sp(4,2)
 def apply_layer1(vec, g):
-    """
-        Apply symplectic part of U1 to vec according to BW structure.
-        
-        input g list of n/2 matrices in Sp(4,2)
-    """
     c = 0
     N = len(vec)
     n = len(vec) // 2
@@ -133,13 +131,10 @@ def apply_layer1(vec, g):
         c += 1
     return res
 
+### Apply symplectic part of second layer of bricks to vec according to BW structure.
+### vec input bitstrings of length 2n
+### g input list of n/2 matrices in Sp(4,2)
 def apply_layer2(vec, g):
-    """
-        Apply symplectic part of U2 to vec according to the representation of U2
-        
-        input g list of n/2 matrices in Sp(4,2).
-        Last element of list of sympl is the symplectic matrix acting on (n, 1) qubits
-    """
     c = 0
     N = len(vec)
     n = N // 2
@@ -148,7 +143,7 @@ def apply_layer2(vec, g):
         out[4*j+2:4*j+6] = g[c] @ vec[4*j+2:4*j+6] % 2
         c += 1
     ## Update for n-th and first qubit according the last element
-    #  of the list sympl
+    #  of the list
     temp = np.zeros(4, dtype = np.uint8)
     temp[:2] = vec[N-2:]
     temp[2:] = vec[:2]
@@ -158,9 +153,7 @@ def apply_layer2(vec, g):
     return out
 
 def upd_vector_BW(v, g):
-    ### Apply U_2
     out = apply_layer2(v, g[1])
-    ### Apply U_1
     out = apply_layer1(out, g[0])
     return out
 
@@ -175,18 +168,16 @@ def upd_generators(generators, g, ensemble):
 def upd_generators_global(generators, g):
     return [update_vector(gen, g, 'global') for gen in generators]
 
+### Update generators with local symplectic matrices
+### generators is list of n vectors in FF_2^{2n}
+### g is list of n 2x2 symplectic matrices
 def upd_generators_LC(generators, g):
-    """
-        generators is list of n vectors in FF_2^{2n}
-        g is list of n 2x2 symplectic matrices
-    """
     return [update_vector(gen, g, 'LC') for gen in generators]
 
+### Update generators according to BW symplectic matrices
+### generator is list of n vectors in FF_2^{2n}
+### g = (g1, g2) tuple of 2 lists of n/2 4x4 symplectic matrices
 def upd_generators_BW(generators, g):
-    """
-    generator is list of n vectors in FF_2^{2n}
-    g = (g1, g2) tuple of 2 lists of n/2 4x4 symplectic matrices
-    """
     return [update_vector(gen, g, 'BW') for gen in generators]
 
 

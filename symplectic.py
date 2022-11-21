@@ -1,5 +1,6 @@
 """
-    Symplectic tools for shadow estimation
+    Symplectic tools for shadow estimation, see also  https://kups.ub.uni-koeln.de/50465/
+    for theoretical discussion
 """
 
 import numpy as np
