@@ -7,7 +7,7 @@ import numpy as np
 from itertools import chain
 
 ## return [a, b] = `sum_{i=1}^n a[i]b[i+n] - a[i+n]b[i]
-def symplecticProduct(a, b):
+def symplectic_product(a, b):
     n = int(len(a) / 2)
     assert n%2==0, "Vectors must be even dimensional"
     assert len(a)==len(b), "Dimension mismatch"
@@ -71,6 +71,7 @@ def identity(n):
 def zero_matrix(n, m):
     return np.zeros( (n,m), dtype=np.uint8 )
 
+## Returns a zero vector of size n
 def zero_vector(n):
     return np.zeros(n, dtype=np.uint8)
 
@@ -161,9 +162,9 @@ def rref(matrix):
             i += 1
             j += 1
     # apply row permutation to memory
-    res[:, :] = res[row_perm]  # TODO: is there a better way to do the permutation in place?
+    res[:, :] = res[row_perm]
     # return rank and row-reduced matrix
-    return res, i
+    return res % 2, i
 
 ## Extract basis from a set of vectors using reduced row echelon form
 def extract_basis(vectors):
@@ -211,8 +212,7 @@ def is_symplectic_product_coord(A):
 def is_symplectic(A):
     n = A.shape[0] // 2
     J = np.zeros( (2*n, 2*n) )
-    J[:n,n:] = np.identity(n, dtype = np.uint8)
-    J[n:,:n] = np.identity(n, dtype = np.uint8)
+    J = symplectic_J(n)
     return np.array_equal( A.transpose()@J@A % 2, J )
    
 
@@ -283,9 +283,9 @@ def beta_product_coord(v, w):
 def phase_weyls(vectors):
     """
         Compute the phase that is appearing in the product of many Weyl operators
-		W(a_1)W(a_2)...W(a_m) = i^{\phi(a_1,...,a_m)}W(a_1+...+a_m)
+		W(a_1)W(a_2)...W(a_m) = i^{phi(a_1,...,a_m)}W(a_1+...+a_m)
         This phase is given by
-		\phi(a_1,...,a_m) = \sum_{j=1}^{m-1} \phi(a_j, \sum_{k=j+1}^m a_k)
+		phi(a_1,...,a_m) = sum_{j=1}^{m-1} phi(a_j, sum_{k=j+1}^m a_k)
         
         vectors = list of vectors a_1,..., a_n in F_2^2n
         n = number of qubits
